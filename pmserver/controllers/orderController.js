@@ -1,9 +1,68 @@
 var Order = require('../models/orderModel');
 var User = require('../models/userModel');
 var item_helpers = require('../middleware/helpers/item_helpers');
+var notificationController = require("./notificationController");
 
 exports.order_list = function(req, res) {
 	Order.find().exec(function(err, orders) {
+		if (err) {
+			return res.send({
+				success: false,
+				code: 600,
+				status: err
+			});
+		}
+
+		if (orders.length == 0) {
+			res.send({
+				success: true,
+				code: 200,
+				status: "no order in database"
+			});
+		} else {
+			res.send({
+				success: true,
+				code: 200,
+				status: "received order list",
+				orders: orders
+			});
+		}
+	});
+};
+
+exports.order_list_traveler = function(req, res) {
+	var travelerId = req.token._id;
+
+	Order.find({traveler: travelerId}).exec(function(err, orders) {
+		if (err) {
+			return res.send({
+				success: false,
+				code: 600,
+				status: err
+			});
+		}
+
+		if (orders.length == 0) {
+			res.send({
+				success: true,
+				code: 200,
+				status: "no order in database"
+			});
+		} else {
+			res.send({
+				success: true,
+				code: 200,
+				status: "received order list",
+				orders: orders
+			});
+		}
+	});
+};
+
+exports.order_list_buyer = function(req, res) {
+	var buyerId = req.token._id;
+
+	Order.find({buyer: buyerId}).exec(function(err, orders) {
 		if (err) {
 			return res.send({
 				success: false,
@@ -70,11 +129,17 @@ exports.create_order = function(req, res) {
 								err: "Error adding order to buyer databases",
 							});
 						}
-	
+						var optionDict = {};
+						optionDict["order"] = new_order._id;
+						var notification_message = "Your order have been created successfully";
+						var notification_message_id = notificationController.notify(buyerId, optionDict, notification_message, res);
+
 						return res.send({
 							success: true,
 							code: 200,
 							status: "order and item created",
+							notification_message: notification_message,
+							notification_message_id: notification_message_id,
 							order_id: new_order._id,
 							item_id: item_id
 						});
@@ -138,10 +203,17 @@ exports.edit_order = function(req, res) {
 						err: order_update_err
 					});
 				}
+				var optionDict = {};
+				optionDict["order"] = order._id;
+				var notification_message = "Your order have been updated successfully";
+				var notification_message_id = notificationController.notify(req.params.id, optionDict, notification_message, res);
+
 				return res.send({
 					success: true,
 					code: 200,
 					status: "Order update successful",
+					notification_message: notification_message,
+					notification_message_id: notification_message_id,
 					order_id: order._id,
 					item_id: item._id
 				});
@@ -194,7 +266,7 @@ exports.delete_order = function(req, res) {
 					} else {
 						Order.remove({
 							_id: req.params.id
-						}, function(err) {
+						}, function(err, order) {
 							if (err) {
 								return res.send({
 									success: false,
@@ -202,10 +274,16 @@ exports.delete_order = function(req, res) {
 									status: err
 								});
 							}
-					
+							var optionDict = {};
+							optionDict["order"] = order._id;
+							var notification_message = "Your order have been deleted successfully";
+							var notification_message_id = notificationController.notify(req.params.id, optionDict, notification_message, res);
+
 							return res.send({
 								success: true,
 								code: 200,
+								notification_message: notification_message,
+								notification_message_id: notification_message_id,
 								status: "Successfully delete this order"
 							});
 						});
@@ -218,3 +296,4 @@ exports.delete_order = function(req, res) {
 
 	
 };
+

@@ -77,7 +77,7 @@ app.use('/protected/items', items);
 
 app.use('/protected/trips', trips);
 app.use('/protected/addresses', addresses);
-app.use('/protected/search', search_function);
+app.use('/public/search', search_function);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

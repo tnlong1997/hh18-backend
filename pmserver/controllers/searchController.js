@@ -43,7 +43,6 @@ exports.search = function(req, res) {
 								err: err
 							});
 						}
-						console.log(matched_items);
 						if (matched_items.length == 0) {
 							search_helpers.find_suggested_order_with_search_string(req, res, function(err, suggested_orders) {
 								if (err) {
