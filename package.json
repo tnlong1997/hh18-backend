@@ -1,37 +1,39 @@
 {
-  "name": "pmcode",
-  "version": "1.0.0",
-  "description": "Backend for Primor",
-  "main": "index.js",
+  "name": "pmserver",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "js-lint": "./node_modules/.bin/eslint '**/*.js'",
-    "js-lint-fix": "./node_modules/.bin/eslint '**/*.js' --fix",
-    "html-lint": "./node_modules/.bin/htmlhint '**/*.html'",
-    "css-lint": "./node_modules/.bin/stylelint '**/*.css'",
-    "css-lint-fix": "./node_modules/.bin/stylelint '**/*.css' --fix",
-    "lint": "npm run js-lint && npm run html-lint && npm run css-lint",
-    "apidoc": "./node_modules/.bin/apidoc -i pmserver/ -o apidoc/ -e node_modules/",
-    "apidoc-deploy": "npm run apidoc && surge -p apidoc/ -d primor-api.surge.sh"
+    "start": "node ./bin/www",
+    "devstart": "nodemon ./bin/www",
+    "lint-mac": "./node_modules/.bin/eslint '**/*.js'",
+    "lint-window": "./node_modules/.bin/eslint **/*.js",
+    "lint-window-fix": "./node_modules/.bin/eslint **/*.js --fix"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/tnlong1997/pmcode.git"
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.18.3",
+    "connect-mongo": "^2.0.1",
+    "cookie-parser": "~1.4.3",
+    "cors": "^2.8.4",
+    "express": "^4.15.5",
+    "hoek": "^5.0.3",
+    "jsonwebtoken": "^8.2.1",
+    "mongoose": "^5.0.16",
+    "mongoose-unique-validator": "^2.0.0",
+    "morgan": "~1.9.0",
+    "nodemailer": "^4.6.4",
+    "npm": "^5.8.0",
+    "pug": "^2.0.3",
+    "serve-favicon": "~2.4.5",
+    "stripe": "^6.13.0"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/tnlong1997/pmcode/issues"
-  },
-  "homepage": "https://github.com/tnlong1997/pmcode#readme",
-  "dependencies": {},
   "devDependencies": {
-    "apidoc": "^0.17.6",
+    "chai": "^4.1.2",
+    "chai-http": "^4.0.0",
+    "debug": "^2.6.9",
     "eslint": "^4.19.1",
-    "htmlhint": "^0.9.13",
-    "stylelint": "^9.2.0",
-    "stylelint-config-recommended": "^2.1.0",
-    "surge": "^0.20.1"
+    "mocha": "^5.1.1",
+    "mockgoose": "^7.3.5",
+    "nodemon": "^1.18.4"
   }
 }

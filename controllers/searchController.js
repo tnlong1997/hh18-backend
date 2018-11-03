@@ -8,6 +8,7 @@ exports.search = function(req, res) {
 	&& req.body.search_traveler_fee_lte
 	&& req.body.search_date_gte
 	&& req.body.search_date_lte
+	&& req.body.search_product_country
 	&& req.body.search_receiver_country
 	&& req.body.page_index
 	&& req.body.num_of_orders) {

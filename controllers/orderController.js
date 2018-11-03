@@ -96,6 +96,7 @@ exports.create_order = function(req, res) {
 		&& req.body.item_price
 		&& req.body.required_date_from
 		&& req.body.required_date_to
+		&& req.body.product_country
 		&& req.body.receiver_country) {
 
 		var buyerId = req.token._id;
@@ -110,6 +111,7 @@ exports.create_order = function(req, res) {
 				buyer: buyerId,
 				required_date_from: req.body.required_date_from,
 				required_date_to: req.body.required_date_to,
+				product_country: req.body.product_country,
 				receiver_country: req.body.receiver_country
 			});
 	
